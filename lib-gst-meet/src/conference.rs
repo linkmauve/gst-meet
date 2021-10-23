@@ -513,7 +513,8 @@ impl StanzaFilter for JitsiConference {
               }
             },
             IqType::Set(element) => {
-              if let Ok(jingle) = Jingle::try_from(element) {
+              let jingle = Jingle::try_from(element);
+              if let Ok(jingle) = jingle {
                 if let Some(Jid::Full(from_jid)) = iq.from {
                   if jingle.action == Action::SessionInitiate {
                     if from_jid.resource == "focus" {
@@ -552,7 +553,7 @@ impl StanzaFilter for JitsiConference {
                 }
               }
               else {
-                debug!("Received non-Jingle IQ");
+                debug!("Received non-Jingle IQ: {:?}", jingle);
               }
             },
             IqType::Result(_) => {

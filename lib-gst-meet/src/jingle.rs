@@ -823,6 +823,7 @@ impl JingleSession {
               },
             };
 
+            /*
             source_element.set_property("auto-header-extension", false)?;
             source_element.connect("request-extension", false, move |values| {
               let f = || {
@@ -850,6 +851,7 @@ impl JingleSession {
                 },
               }
             })?;
+            */
             pipeline
               .add(&source_element)
               .context("failed to add depayloader to pipeline")?;
@@ -929,6 +931,7 @@ impl JingleSession {
     };
     audio_sink_element.set_property("min-ptime", 10i64 * 1000 * 1000)?;
     audio_sink_element.set_property("ssrc", audio_ssrc)?;
+    /*
     if audio_sink_element.has_property("auto-header-extension", None) {
       audio_sink_element.set_property("auto-header-extension", false)?;
       audio_sink_element.connect("request-extension", false, move |values| {
@@ -966,6 +969,7 @@ impl JingleSession {
     else {
       debug!("audio payloader: no rtp header extension support");
     }
+    */
     pipeline.add(&audio_sink_element)?;
 
     let codec_name = conference.config.video_codec.as_str();
@@ -985,6 +989,7 @@ impl JingleSession {
       bail!("unsupported video codec: {}", codec_name);
     };
     video_sink_element.set_property("ssrc", video_ssrc)?;
+    /*
     if video_sink_element.has_property("auto-header-extension", None) {
       video_sink_element.set_property("auto-header-extension", false)?;
       video_sink_element.connect("request-extension", false, move |values| {
@@ -1020,6 +1025,7 @@ impl JingleSession {
     else {
       debug!("video payloader: no rtp header extension support");
     }
+    */
     pipeline.add(&video_sink_element)?;
 
     let mut audio_caps = gstreamer::Caps::builder("application/x-rtp");
